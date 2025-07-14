@@ -65,4 +65,3 @@ Project sẽ chạy tại `http://localhost:3000`.
 
 ---
 
-Nếu bạn gặp lỗi khi chạy `npm install` hoặc `npm start`, gửi mình lỗi, mình sẽ giúp fix ngay.
