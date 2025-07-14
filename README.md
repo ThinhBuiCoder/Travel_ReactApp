@@ -28,7 +28,6 @@ Chạy lệnh:
 git clone https://github.com/ThinhBuiCoder/Travel_ReactApp.git
 ```
 
-> 💡 Bạn đang clone toàn bộ project trong nhánh `main`, không cần thêm `/tree/main`.
 
 ---
 
