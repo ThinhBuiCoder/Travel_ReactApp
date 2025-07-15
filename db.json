@@ -1,0 +1,253 @@
+{
+  "tours": [
+    {
+      "id": 1,
+      "name": "Du lịch Đà Lạt 3N2Đ",
+      "location": "Đà Lạt",
+      "description": "Khám phá thành phố ngàn hoa với khí hậu mát mẻ quanh năm",
+      "price": 2500000,
+      "departureDate": "2024-12-01",
+      "image": "https://bloganchoi.com/wp-content/uploads/2021/11/review-da-lat-toan-canh-dat-lat-trong-suong-mu-som-mai-1.jpg",
+      "rating": 4.5,
+      "reviews": []
+    },
+    {
+      "id": 2,
+      "name": "Tour Hạ Long 2N1Đ",
+      "location": "Hạ Long",
+      "description": "Tham quan vịnh Hạ Long - Di sản thế giới",
+      "price": 3200000,
+      "departureDate": "2024-12-15",
+      "image": "https://images.unsplash.com/photo-1528127269322-539801943592?w=400",
+      "rating": 4.8,
+      "reviews": []
+    },
+    {
+      "id": 3,
+      "name": "Tour Sapa 4N3Đ",
+      "location": "Sapa",
+      "description": "Chinh phục Fansipan và ngắm ruộng bậc thang tuyệt đẹp",
+      "price": 3800000,
+      "departureDate": "2024-12-20",
+      "image": "https://52hz.vn/wp-content/uploads/2021/11/7-dinh-fansipan-hung-vi.jpg",
+      "rating": 4.6,
+      "reviews": []
+    },
+    {
+      "id": 4,
+      "name": "Tour Phú Quốc 5N4Đ",
+      "location": "Phú Quốc",
+      "description": "Nghỉ dưỡng biển đảo với hải sản tươi ngon và cáp treo Hòn Thơm",
+      "price": 5200000,
+      "departureDate": "2024-12-25",
+      "image": "https://phuquoctrip.com/files/images/daily_tour/land_tour_1/land_tour_01_05.jpg",
+      "rating": 4.7,
+      "reviews": []
+    },
+    {
+      "id": 5,
+      "name": "Tour Hội An - Huế 4N3Đ",
+      "location": "Hội An",
+      "description": "Khám phá phố cổ Hội An và cố đô Huế với di sản văn hóa phong phú",
+      "price": 4100000,
+      "departureDate": "2024-12-30",
+      "image": "https://www.pullman-danang.com/wp-content/uploads/sites/86/2022/07/Cuong-Art.jpg",
+      "rating": 4.9,
+      "reviews": []
+    },
+    {
+      "id": 6,
+      "name": "Tour Nha Trang 3N2Đ",
+      "location": "Nha Trang",
+      "description": "Tắm biển và khám phá đảo Hòn Mun, Vinpearl Land",
+      "price": 3600000,
+      "departureDate": "2025-01-05",
+      "image": "https://emeraldbayhotelnhatrang.com/wp-content/uploads/2023/03/AdobeStock_315104972-1-scaled.jpg",
+      "rating": 4.4,
+      "reviews": []
+    },
+    {
+      "id": 7,
+      "name": "Tour Cần Thơ - Đồng bằng sông Cửu Long 3N2Đ",
+      "location": "Cần Thơ",
+      "description": "Trải nghiệm chợ nổi Cái Răng và văn hóa miệt vườn Nam Bộ",
+      "price": 2800000,
+      "departureDate": "2025-01-10",
+      "image": "https://valitravel.vn/wp-content/uploads/2022/10/kinh-nghiem-du-lich-cho-noi-cai-rang-moi-nhat-2022-1428.jpg",
+      "rating": 4.3,
+      "reviews": []
+    },
+    {
+      "id": 8,
+      "name": "Tour Ninh Bình 2N1Đ",
+      "location": "Ninh Bình",
+      "description": "Khám phá Tràng An, Tam Cốc - Bích Động và cố đô Hoa Lư",
+      "price": 2200000,
+      "departureDate": "2025-01-15",
+      "image": "https://media.gody.vn/images/ninh-binh/tam-coc-bich-dong/12-2016/20161213092227-tam-coc-bich-dong-gody%20(7).jpg",
+      "rating": 4.6,
+      "reviews": []
+    },
+    {
+      "id": 9,
+      "name": "Tour Đà Nẵng - Bà Nà Hills 3N2Đ",
+      "location": "Đà Nẵng",
+      "description": "Tham quan Cầu Vàng, Bà Nà Hills và thư giãn tại bãi biển Mỹ Khê",
+      "price": 3900000,
+      "departureDate": "2025-01-20",
+      "image": "https://banahills.sunworld.vn/wp-content/uploads/2020/10/DJI_0971.jpg",
+      "rating": 4.5,
+      "reviews": []
+    },
+    {
+      "id": 10,
+      "name": "Du lịch Gia Lai 3N2Đ",
+      "location": "Gia Lai",
+      "description": "Khám phá Biển Hồ Gia Lai, bạn sẽ được đắm chìm trong cảnh sắc hùng vĩ của thiên nhiên, với mặt nước trong xanh bao bọc bởi những ngọn núi xanh biếc.",
+      "price": 3400000,
+      "departureDate": "2025-10-10",
+      "image": "https://cdn3.ivivu.com/2022/10/gia-lai.jpg",
+      "rating": 4.2,
+      "reviews": [
+        {
+          "id": 1,
+          "userId": 1,
+          "userName": "Admin User",
+          "rating": 4,
+          "comment": "Tour rất tuyệt vời, cảnh đẹp và hướng dẫn viên nhiệt tình!",
+          "date": "2025-07-15T10:30:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Tour Hà Nội 3N2Đ",
+      "location": "Hà Nội",
+      "description": "Hà Nội là thủ đô ngàn năm văn hiến, còn lưu dấu nhiều di tích như Hồ Gươm, Cầu Thê Húc, Chùa Quán Sứ, Hồ Tây, 36 phố phường.",
+      "price": 5000000,
+      "departureDate": "2025-12-10",
+      "image": "https://static.vinwonders.com/production/gioi-thieu-ve-ha-noi-banner.jpg",
+      "rating": 4.8,
+      "reviews": [
+        {
+          "id": 1,
+          "userId": 1,
+          "userName": "Admin User",
+          "rating": 5,
+          "comment": "Hà Nội thật tuyệt vời! Phố cổ và các di tích lịch sử rất ấn tượng.",
+          "date": "2025-07-15T11:00:00.000Z"
+        },
+        {
+          "id": 2,
+          "userId": 2,
+          "userName": "Nguyen Van A",
+          "rating": 4,
+          "comment": "Tour tốt, chỉ có điều thời tiết hơi nóng. Nhưng hướng dẫn viên rất chu đáo.",
+          "date": "2025-07-14T14:30:00.000Z"
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin User",
+      "email": "admin@travel-hub.com",
+      "bookedTours": []
+    },
+    {
+      "id": 2,
+      "name": "Nguyen Van A",
+      "email": "nguyenvana@gmail.com",
+      "bookedTours": []
+    },
+    {
+      "id": 3,
+      "name": "Tran Thi B",
+      "email": "tranthib@gmail.com",
+      "bookedTours": []
+    }
+  ],
+  "bookings": [
+    {
+      "id": 1,
+      "userId": 1,
+      "tourId": 10,
+      "tourName": "Du lịch Gia Lai 3N2Đ",
+      "amount": 3400000,
+      "paymentMethod": "Thẻ tín dụng",
+      "paymentDetails": {
+        "cardHolder": "ADMIN USER",
+        "cardLast4": "1234"
+      },
+      "bookingDate": "2025-07-15T16:07:38.262Z",
+      "status": "confirmed"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "tourId": 4,
+      "tourName": "Tour Phú Quốc 5N4Đ",
+      "amount": 5200000,
+      "paymentMethod": "Thẻ tín dụng",
+      "paymentDetails": {
+        "cardHolder": "ADMIN USER",
+        "cardLast4": "5678"
+      },
+      "bookingDate": "2025-07-15T16:09:38.249Z",
+      "status": "confirmed"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "tourId": 11,
+      "tourName": "Tour Hà Nội 3N2Đ",
+      "amount": 5000000,
+      "paymentMethod": "Chuyển khoản ngân hàng",
+      "paymentDetails": {
+        "bankName": "vietcombank",
+        "accountNumber": "9012****"
+      },
+      "bookingDate": "2025-07-15T16:09:49.002Z",
+      "status": "confirmed"
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "tourId": 1,
+      "tourName": "Du lịch Đà Lạt 3N2Đ",
+      "amount": 2500000,
+      "paymentMethod": "Thẻ tín dụng",
+      "paymentDetails": {
+        "cardHolder": "NGUYEN VAN A",
+        "cardLast4": "4567"
+      },
+      "bookingDate": "2025-07-14T10:15:00.000Z",
+      "status": "confirmed"
+    },
+    {
+      "id": 5,
+      "userId": 3,
+      "tourId": 5,
+      "tourName": "Tour Hội An - Huế 4N3Đ",
+      "amount": 4100000,
+      "paymentMethod": "Chuyển khoản ngân hàng",
+      "paymentDetails": {
+        "bankName": "techcombank",
+        "accountNumber": "7890****"
+      },
+      "bookingDate": "2025-07-13T14:20:00.000Z",
+      "status": "pending"
+    },
+    {
+      "userId": 1,
+      "tourId": 3,
+      "tourName": "Tour Sapa 4N3Đ",
+      "amount": 3800000,
+      "paymentMethod": "Thẻ tín dụng",
+      "bookingDate": "2025-07-15T16:51:15.400Z",
+      "status": "confirmed",
+      "id": 6
+    }
+  ]
+}
