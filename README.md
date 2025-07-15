@@ -4,10 +4,6 @@
 
 # 🚀 **HƯỚNG DẪN CHẠY TRAVEL HUB REACT APP**
 
-## 📋 **YÊU CẦU HỆ THỐNG**
-- ✅ **Node.js** version 16+ ([Download tại đây](https://nodejs.org/))
-- ✅ **Git** ([Download tại đây](https://git-scm.com/))
-- ✅ **VS Code** (khuyên dùng)
 
 ---
 
@@ -87,34 +83,6 @@ Tạo file `db.json` với nội dung:
 
 ## 🚀 **BƯỚC 4: CHẠY ỨNG DỤNG**
 
-### ✅ **4.1 Cách 1: Chạy từng server riêng (Khuyên dùng)**
-
-#### **Terminal 1: Chạy JSON Server (Database)**
-```bash
-npm run server
-```
-**✅ Output mong đợi:**
-```
-Resources
-http://localhost:3001/tours
-http://localhost:3001/users  
-http://localhost:3001/bookings
-
-Home
-http://localhost:3001
-```
-
-#### **Terminal 2: Chạy React App**
-```bash
-npm start
-```
-**✅ Output mong đợi:**
-```
-Local:            http://localhost:3000
-On Your Network:  http://192.168.1.100:3000
-```
-
-### ✅ **4.2 Cách 2: Chạy cả 2 cùng lúc**
 ```bash
 npm run dev
 ```
