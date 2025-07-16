@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Form, Button, Alert, Spinner, Badge, Dropdown } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Alert, Spinner, Badge, Dropdown, Pagination } from 'react-bootstrap';
 import TourCard from '../components/TourCard';
 import TourForm from '../components/TourForm';
 import AdvancedSearchFilter from '../components/AdvancedSearchFilter';
@@ -16,6 +16,8 @@ const Tours = () => {
   const [showAdvancedFilter, setShowAdvancedFilter] = useState(false);
   const [sortBy, setSortBy] = useState('default');
   const [viewMode, setViewMode] = useState('grid');
+  const [currentPage, setCurrentPage] = useState(1);
+  const TOURS_PER_PAGE = 9;
 
   // Safe user data access
   const userName = user?.name || 'Unknown';
@@ -70,6 +72,18 @@ const Tours = () => {
   };
 
   const sortedTours = getSortedTours();
+
+  // Pagination logic
+  const totalPages = Math.ceil(sortedTours.length / TOURS_PER_PAGE);
+  const paginatedTours = sortedTours.slice(
+    (currentPage - 1) * TOURS_PER_PAGE,
+    currentPage * TOURS_PER_PAGE
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <Container className="my-4">
@@ -303,36 +317,54 @@ const Tours = () => {
       )}
 
       {/* Tours Grid/List */}
-      {!loading && (
-        <>
-          {viewMode === 'grid' ? (
-            <Row>
-              {sortedTours.map(tour => (
-                <Col md={6} lg={4} key={tour.id} className="mb-4">
-                  <TourCard 
-                    tour={tour} 
-                    onEdit={handleEdit}
-                    showActions={isAdmin}
-                  />
-                </Col>
+      <>
+        {viewMode === 'grid' ? (
+          <Row>
+            {paginatedTours.map(tour => (
+              <Col md={6} lg={4} key={tour.id} className="mb-4">
+                <TourCard 
+                  tour={tour} 
+                  onEdit={handleEdit}
+                  showActions={isAdmin}
+                />
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <Row>
+            {paginatedTours.map(tour => (
+              <Col xs={12} key={tour.id} className="mb-3">
+                <TourCard 
+                  tour={tour} 
+                  onEdit={handleEdit} 
+                  viewMode="list"
+                  showActions={isAdmin}
+                />
+              </Col>
+            ))}
+          </Row>
+        )}
+        {/* Pagination controls */}
+        {totalPages > 1 && (
+          <div className="d-flex justify-content-center mt-4">
+            <Pagination>
+              <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
+              <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+              {Array.from({ length: totalPages }, (_, idx) => (
+                <Pagination.Item
+                  key={idx + 1}
+                  active={currentPage === idx + 1}
+                  onClick={() => handlePageChange(idx + 1)}
+                >
+                  {idx + 1}
+                </Pagination.Item>
               ))}
-            </Row>
-          ) : (
-            <Row>
-              {sortedTours.map(tour => (
-                <Col xs={12} key={tour.id} className="mb-3">
-                  <TourCard 
-                    tour={tour} 
-                    onEdit={handleEdit} 
-                    viewMode="list"
-                    showActions={isAdmin}
-                  />
-                </Col>
-              ))}
-            </Row>
-          )}
-        </>
-      )}
+              <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+              <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+            </Pagination>
+          </div>
+        )}
+      </>
 
       {/* Empty State */}
       {!loading && sortedTours.length === 0 && (
