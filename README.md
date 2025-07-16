@@ -4,7 +4,6 @@
 
 # 🚀 **HƯỚNG DẪN CHẠY TRAVEL HUB REACT APP**
 
-
 ---
 
 ## 🔽 **BƯỚC 1: CLONE PROJECT TỪ GITHUB**
@@ -90,21 +89,43 @@ npm run dev
 
 ---
 
-## 🔍 **BƯỚC 5: KIỂM TRA HOẠT ĐỘNG**
+## 💬 **BƯỚC 5: CHẠY SERVER CHAT REAL TIME**
 
-### ✅ **5.1 Kiểm tra React App**
+### ✅ **5.1 Cài đặt thư viện cho server chat**
+```bash
+cd src/components
+npm install express socket.io cors
+```
+
+### ✅ **5.2 Chạy server chat**
+```bash
+node server.js
+```
+> 💡 Nếu thành công sẽ thấy: `Socket.io chat server running on port 4000`
+
+---
+
+## 🔍 **BƯỚC 6: KIỂM TRA HOẠT ĐỘNG**
+
+### ✅ **6.1 Kiểm tra React App**
 - Mở browser tại: `http://localhost:3000`
 - **Mong đợi:** Trang chủ Travel Hub hiển thị
 
-### ✅ **5.2 Kiểm tra JSON Server API**
+### ✅ **6.2 Kiểm tra JSON Server API**
 - Mở browser tại: `http://localhost:3001/tours`
 - **Mong đợi:** JSON response với danh sách tours
 
-### ✅ **5.3 Test các tính năng:**
+### ✅ **6.3 Kiểm tra chat real time**
+- Đăng nhập bằng 2 tài khoản khác nhau (user & admin) trên 2 trình duyệt/tab.
+- Gửi tin nhắn ở khung "Chat real time" trên trang chủ, tin nhắn sẽ xuất hiện ngay lập tức ở cả 2 bên.
+
+### ✅ **6.4 Test các tính năng:**
 1. **Đăng nhập:** Email bất kỳ + password bất kỳ
-2. **Xem tours:** Danh sách tour hiển thị
+2. **Xem tours:** Danh sách tour hiển thị (có phân trang, mỗi trang 9 tour)
 3. **Tạo tour:** Click "Thêm tour mới"
 4. **Advanced Search:** Click "Bộ lọc nâng cao"
+5. **Tour nổi bật:** Trang chủ hiển thị 6 tour có rating cao nhất
+6. **Chat real time:** Gửi/nhận tin nhắn giữa user và admin
 
 ---
 
@@ -152,6 +173,11 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
+### ❌ **Lỗi: Chat real time không kết nối được**
+- Đảm bảo đã chạy `node server.js` trong `src/components`.
+- Nếu port 4000 bị chiếm, đổi cả ở `server.js` và `ChatRealtime.js`.
+- Kiểm tra firewall/antivirus không chặn port 4000.
+
 ---
 
 ## 📱 **CÁC URL QUAN TRỌNG**
@@ -163,6 +189,7 @@ npm install
 | **Tours API** | `http://localhost:3001/tours` | Danh sách tours |
 | **Users API** | `http://localhost:3001/users` | Danh sách users |
 | **Bookings API** | `http://localhost:3001/bookings` | Danh sách bookings |
+| **Chat Server** | `http://localhost:4000` | Socket.io chat server |
 
 ---
 
@@ -185,10 +212,13 @@ npm test           # Chạy tests
 - [ ] ✅ File `db.json` tồn tại
 - [ ] ✅ JSON Server chạy ở port 3001
 - [ ] ✅ React App chạy ở port 3000
+- [ ] ✅ Server chat real time chạy ở port 4000
 - [ ] ✅ Có thể đăng nhập
-- [ ] ✅ Có thể xem danh sách tours
+- [ ] ✅ Có thể xem danh sách tours (có phân trang)
 - [ ] ✅ Có thể tạo tour mới
 - [ ] ✅ Advanced Search hoạt động
+- [ ] ✅ Tour nổi bật lấy theo rating cao nhất
+- [ ] ✅ Chat real time hoạt động
 
 ---
 
@@ -214,5 +244,7 @@ Nếu tất cả các bước trên hoạt động, bạn đã setup thành côn
 - ✅ Thanh toán giả lập
 - ✅ AI Chatbot tư vấn
 - ✅ Statistics & Analytics
+- ✅ Chat real time user ↔ admin
+- ✅ Tour nổi bật lấy theo rating cao nhất
 
 **Happy Coding! 🚀**
