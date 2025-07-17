@@ -97,14 +97,22 @@ export const UserProvider = ({ children }) => {
 
   const updateProfile = async (userData) => {
     try {
+      // Nếu không đổi mật khẩu thì không gửi trường password
       const updatedUser = { ...state.user, ...userData };
-      
+      if (!userData.password) {
+        delete updatedUser.password;
+      }
+      // Nếu có avatar mới (base64 hoặc url) thì cập nhật
+      if (userData.avatar) {
+        updatedUser.avatar = userData.avatar;
+      }
+      if (userData.phone) {
+        updatedUser.phone = userData.phone;
+      }
       // Update in database
       await ApiService.updateUser(state.user.id, updatedUser);
-      
       localStorage.setItem('travel-hub-user', JSON.stringify(updatedUser));
-      dispatch({ type: 'UPDATE_PROFILE', payload: userData });
-      
+      dispatch({ type: 'UPDATE_PROFILE', payload: updatedUser });
       return { success: true };
     } catch (error) {
       return { success: false, error: 'Không thể cập nhật thông tin' };

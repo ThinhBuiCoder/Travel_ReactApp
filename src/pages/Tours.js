@@ -6,9 +6,10 @@ import AdvancedSearchFilter from '../components/AdvancedSearchFilter';
 import ProtectedRoute from '../components/ProtectedRoute';
 import { useTours } from '../context/TourContext';
 import { useUser } from '../context/UserContext';
+import ApiService from '../services/api';
 
 const Tours = () => {
-  const { tours, searchTours, loading, error, loadTours } = useTours();
+  const { tours, searchTours, loading, error, loadTours, updateTour } = useTours();
   const { isAuthenticated, isAdmin, user } = useUser();
   const [showForm, setShowForm] = useState(false);
   const [editTour, setEditTour] = useState(null);
@@ -48,6 +49,17 @@ const Tours = () => {
     loadTours();
     setSearchTerm('');
     setShowAdvancedFilter(false);
+  };
+
+  const handleBookingSuccess = async (tourId) => {
+    // Lấy lại tour mới nhất từ server và cập nhật vào context
+    try {
+      const latestTour = await ApiService.getTour(tourId);
+      await updateTour(latestTour);
+    } catch (err) {
+      // Có thể hiện thông báo lỗi nếu muốn
+      console.error('Không thể cập nhật slot tour:', err);
+    }
   };
 
   const getSortedTours = () => {
@@ -326,6 +338,7 @@ const Tours = () => {
                   tour={tour} 
                   onEdit={handleEdit}
                   showActions={isAdmin}
+                  onBookingSuccess={handleBookingSuccess}
                 />
               </Col>
             ))}
@@ -339,6 +352,7 @@ const Tours = () => {
                   onEdit={handleEdit} 
                   viewMode="list"
                   showActions={isAdmin}
+                  onBookingSuccess={handleBookingSuccess}
                 />
               </Col>
             ))}

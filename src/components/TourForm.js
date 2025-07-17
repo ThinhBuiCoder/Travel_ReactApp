@@ -10,7 +10,8 @@ const TourForm = ({ show, onHide, editTour = null }) => {
     description: '',
     price: '',
     departureDate: '',
-    image: ''
+    image: '',
+    slots: 2 // Mặc định 2 slot
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -20,7 +21,8 @@ const TourForm = ({ show, onHide, editTour = null }) => {
     if (editTour) {
       setFormData({
         ...editTour,
-        price: editTour.price.toString() // Convert to string for form input
+        price: editTour.price.toString(), // Convert to string for form input
+        slots: editTour.slots !== undefined ? editTour.slots : 2
       });
     } else {
       setFormData({
@@ -29,7 +31,8 @@ const TourForm = ({ show, onHide, editTour = null }) => {
         description: '',
         price: '',
         departureDate: '',
-        image: ''
+        image: '',
+        slots: 2
       });
     }
     // Reset states when modal opens/closes
@@ -77,6 +80,11 @@ const TourForm = ({ show, onHide, editTour = null }) => {
       return false;
     }
 
+    if (!formData.slots || parseInt(formData.slots) < 1) {
+      setError('Số lượng slot phải lớn hơn 0');
+      return false;
+    }
+
     return true;
   };
 
@@ -94,6 +102,7 @@ const TourForm = ({ show, onHide, editTour = null }) => {
       const tourData = {
         ...formData,
         price: parseInt(formData.price),
+        slots: parseInt(formData.slots),
         rating: editTour ? editTour.rating : 0,
         reviews: editTour ? editTour.reviews : []
       };
@@ -130,7 +139,8 @@ const TourForm = ({ show, onHide, editTour = null }) => {
       description: '',
       price: '',
       departureDate: '',
-      image: ''
+      image: '',
+      slots: 2
     });
     setError('');
     setSuccess(false);
@@ -224,6 +234,22 @@ const TourForm = ({ show, onHide, editTour = null }) => {
             />
             <Form.Text className="text-muted">
               Giá tour tính bằng VNĐ, phải lớn hơn 0
+            </Form.Text>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Số lượng slot *</Form.Label>
+            <Form.Control
+              type="number"
+              name="slots"
+              value={formData.slots}
+              onChange={handleChange}
+              min="1"
+              required
+              disabled={loading}
+            />
+            <Form.Text className="text-muted">
+              Số lượng chỗ tối đa cho tour này (mặc định 2)
             </Form.Text>
           </Form.Group>
 

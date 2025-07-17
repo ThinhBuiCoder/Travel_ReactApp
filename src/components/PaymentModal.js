@@ -4,7 +4,7 @@ import { useUser } from '../context/UserContext';
 import ApiService from '../services/api';
 import emailjs from 'emailjs-com';
 
-const PaymentModal = ({ show, onHide, tour }) => {
+const PaymentModal = ({ show, onHide, tour, onBookingSuccess }) => {
   const { user } = useUser(); // Bỏ bookTour để tránh duplicate
   const [paymentMethod, setPaymentMethod] = useState('credit-card');
   const [cardInfo, setCardInfo] = useState({
@@ -29,6 +29,51 @@ const PaymentModal = ({ show, onHide, tour }) => {
   const handleBankChange = (e) => {
     const { name, value } = e.target;
     setBankInfo(prev => ({ ...prev, [name]: value }));
+  };
+
+  // Thêm hàm xử lý nhập tên chủ thẻ chỉ cho phép chữ cái và khoảng trắng, tự in hoa
+  const handleCardHolderChange = (e) => {
+    let value = e.target.value.toUpperCase();
+    value = value.replace(/[^A-Z\s]/g, ''); // Chỉ cho chữ cái và khoảng trắng
+    setCardInfo(prev => ({ ...prev, cardHolder: value }));
+  };
+
+  // Hàm auto-format ngày hết hạn MM/YY
+  const handleExpiryDateChange = (e) => {
+    let value = e.target.value;
+    // Chỉ cho nhập số và dấu /
+    value = value.replace(/[^0-9/]/g, '');
+    // Nếu nhập 2 số đầu và chưa có / thì tự động chèn
+    if (value.length === 2 && !value.includes('/')) {
+      value = value + '/';
+    }
+    // Nếu nhập quá 5 ký tự thì cắt bớt
+    if (value.length > 5) value = value.slice(0, 5);
+    // Validate realtime
+    let error = '';
+    if (value.length === 5) {
+      if (!/^\d{2}\/\d{2}$/.test(value)) {
+        error = 'Định dạng phải là MM/YY';
+      } else {
+        const [mm, yy] = value.split('/').map(Number);
+        if (mm < 1 || mm > 12) {
+          error = 'Tháng (MM) phải từ 01 đến 12';
+        } else {
+          const now = new Date();
+          const currentYear = now.getFullYear() % 100;
+          const currentMonth = now.getMonth() + 1;
+          if (yy < currentYear) {
+            error = 'Năm hết hạn không được nhỏ hơn năm hiện tại';
+          } else if (yy === currentYear && mm < currentMonth) {
+            error = 'Tháng hết hạn không được nhỏ hơn tháng hiện tại';
+          }
+        }
+      }
+    } else if (value.length > 0 && value.length < 5) {
+      error = '';
+    }
+    setError(error); // Use setError for the main error message
+    setCardInfo(prev => ({ ...prev, expiryDate: value }));
   };
 
   const sendConfirmationEmail = async (bookingDetails) => {
@@ -67,33 +112,50 @@ const PaymentModal = ({ show, onHide, tour }) => {
         setError('Vui lòng điền đầy đủ thông tin thẻ');
         return false;
       }
-      
+      // Validate tên chủ thẻ
+      if (!/^[A-Z\s]+$/.test(cardInfo.cardHolder)) {
+        setError('Tên chủ thẻ chỉ được chứa chữ cái và khoảng trắng');
+        return false;
+      }
       // Validate card number (basic check)
       if (cardInfo.cardNumber.replace(/\s/g, '').length < 13) {
         setError('Số thẻ không hợp lệ');
         return false;
       }
-      
-      // Validate expiry date format
+      // Validate expiry date MM/YY
       if (!/^\d{2}\/\d{2}$/.test(cardInfo.expiryDate)) {
         setError('Ngày hết hạn phải có định dạng MM/YY');
         return false;
       }
-      
+      const [mm, yy] = cardInfo.expiryDate.split('/').map(Number);
+      if (mm < 1 || mm > 12) {
+        setError('Tháng (MM) phải từ 01 đến 12');
+        return false;
+      }
+      // Validate năm hiện tại trở đi
+      const now = new Date();
+      const currentYear = now.getFullYear() % 100; // 2 số cuối
+      const currentMonth = now.getMonth() + 1;
+      if (yy < currentYear) {
+        setError('Năm hết hạn không được nhỏ hơn năm hiện tại');
+        return false;
+      }
+      if (yy === currentYear && mm < currentMonth) {
+        setError('Tháng hết hạn không được nhỏ hơn tháng hiện tại');
+        return false;
+      }
       // Validate CVV
       if (!/^\d{3,4}$/.test(cardInfo.cvv)) {
         setError('CVV phải có 3-4 chữ số');
         return false;
       }
     }
-    
     if (paymentMethod === 'bank-transfer') {
       if (!bankInfo.accountNumber) {
         setError('Vui lòng nhập số tài khoản');
         return false;
       }
     }
-    
     return true;
   };
 
@@ -101,26 +163,47 @@ const PaymentModal = ({ show, onHide, tour }) => {
     e.preventDefault();
     setError('');
     
+    // 1. Lấy lại tour mới nhất từ server để kiểm tra slot
+    let latestTour;
+    try {
+      latestTour = await ApiService.getTour(tour.id);
+    } catch (err) {
+      setError('Không thể kiểm tra slot tour. Vui lòng thử lại!');
+      return;
+    }
+    if (!latestTour || latestTour.slots === 0) {
+      setError('Tour này đã hết slot. Vui lòng chọn tour khác!');
+      return;
+    }
+    // 2. Kiểm tra user đã đặt tour này chưa
+    let userBookings = [];
+    try {
+      userBookings = await ApiService.getBookings(user.id);
+    } catch (err) {
+      setError('Không thể kiểm tra lịch sử booking. Vui lòng thử lại!');
+      return;
+    }
+    const hasBooked = userBookings.some(b => b.tourId === tour.id);
+    if (hasBooked) {
+      setError('Bạn đã đặt tour này rồi, không thể đặt lại!');
+      return;
+    }
+    // 3. Validate form thanh toán
     if (!validatePaymentForm()) {
       return;
     }
-    
     setIsProcessing(true);
-
     try {
       // Giả lập quá trình thanh toán (2 giây)
       await new Promise(resolve => setTimeout(resolve, 2000));
-
       const paymentMethodText = paymentMethod === 'credit-card' ? 'Thẻ tín dụng' : 'Chuyển khoản ngân hàng';
-
-      // 1. Tạo booking trong database (SINGLE SOURCE OF TRUTH)
+      // 4. Tạo booking trong database
       const bookingData = {
         userId: user.id,
         tourId: tour.id,
         tourName: tour.name,
         amount: tour.price,
         paymentMethod: paymentMethodText,
-        // Thêm thông tin chi tiết thanh toán
         paymentDetails: paymentMethod === 'credit-card' ? {
           cardHolder: cardInfo.cardHolder,
           cardLast4: cardInfo.cardNumber.slice(-4)
@@ -129,31 +212,26 @@ const PaymentModal = ({ show, onHide, tour }) => {
           accountNumber: bankInfo.accountNumber.slice(-4) + '****'
         }
       };
-
       const newBooking = await ApiService.createBooking(bookingData);
-      console.log('✅ Booking saved to database:', newBooking);
-
-      // 2. KHÔNG cập nhật localStorage để tránh duplicate
-      // bookTour() function đã bị remove
-
-      // 3. Gửi email xác nhận
+      // 5. Giảm slot tour
+      await ApiService.updateTour(tour.id, { ...latestTour, slots: latestTour.slots - 1 });
+      // 6. Gửi email xác nhận
       await sendConfirmationEmail({
         id: newBooking.id,
         paymentMethod: paymentMethodText
       });
-
       setIsProcessing(false);
       setShowSuccess(true);
-
-      // Đóng modal sau 3 giây
+      // Gọi callback để cập nhật slot thực tế trên UI
+      if (onBookingSuccess) {
+        onBookingSuccess(tour.id);
+      }
       setTimeout(() => {
         setShowSuccess(false);
         onHide();
         resetForm();
       }, 3000);
-
     } catch (error) {
-      console.error('❌ Payment error:', error);
       setIsProcessing(false);
       setError('Có lỗi xảy ra khi đặt tour. Vui lòng thử lại!');
     }
@@ -291,7 +369,7 @@ const PaymentModal = ({ show, onHide, tour }) => {
                             type="text"
                             name="cardHolder"
                             value={cardInfo.cardHolder}
-                            onChange={handleCardChange}
+                            onChange={handleCardHolderChange}
                             placeholder="NGUYEN VAN A"
                             style={{ textTransform: 'uppercase' }}
                             disabled={isProcessing}
@@ -308,7 +386,7 @@ const PaymentModal = ({ show, onHide, tour }) => {
                             type="text"
                             name="expiryDate"
                             value={cardInfo.expiryDate}
-                            onChange={handleCardChange}
+                            onChange={handleExpiryDateChange}
                             placeholder="MM/YY"
                             maxLength={5}
                             disabled={isProcessing}

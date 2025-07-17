@@ -8,9 +8,14 @@ import TourCard from '../components/TourCard';
 import ChatAI from '../components/ChatAI';
 import ChatRealtime from '../components/ChatRealtime';
 import { useTours } from '../context/TourContext';
+import { useEffect } from 'react';
 
 const Home = () => {
-  const { tours } = useTours();
+  const { tours, clearFilters } = useTours();
+  useEffect(() => {
+    clearFilters();
+    // eslint-disable-next-line
+  }, []);
   // Lấy 6 tour có rating cao nhất
   const featuredTours = [...tours]
     .sort((a, b) => (b.rating || 0) - (a.rating || 0))

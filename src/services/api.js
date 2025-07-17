@@ -211,7 +211,8 @@ class ApiService {
           email: user.email,
           password: user.password, // Lưu password
           role: user.role || 'user', // Lưu role nếu có, mặc định là 'user'
-          bookedTours: []
+          bookedTours: [],
+          createdAt: user.createdAt || new Date().toISOString()
         }),
       });
       
@@ -252,6 +253,26 @@ class ApiService {
     } catch (error) {
       console.error('Error updating user:', error);
       throw new Error('Không thể cập nhật thông tin. Vui lòng thử lại.');
+    }
+  }
+
+  // Delete user
+  async deleteUser(id) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('Người dùng không tồn tại');
+        }
+        throw new Error(`HTTP ${response.status}: Failed to delete user`);
+      }
+      console.log('User deleted successfully:', id);
+      return true;
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      throw new Error('Không thể xóa người dùng. Vui lòng thử lại.');
     }
   }
 

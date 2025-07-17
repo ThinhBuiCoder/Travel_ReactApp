@@ -11,7 +11,7 @@ const ChatRealtime = () => {
   const [input, setInput] = useState('');
   const [connected, setConnected] = useState(false);
   const socketRef = useRef(null);
-  const chatEndRef = useRef(null);
+  const chatBoxRef = useRef(null); // Thay cho chatEndRef
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -36,9 +36,10 @@ const ChatRealtime = () => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    // Tự động scroll xuống cuối khi có tin nhắn mới
-    if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    // Chỉ scroll trong khung chat, không kéo cả trang
+    const chatBox = chatBoxRef.current;
+    if (chatBox) {
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
   }, [messages]);
 
@@ -78,7 +79,7 @@ const ChatRealtime = () => {
           {connected ? 'Đã kết nối server chat' : 'Mất kết nối...'}</small>
       </Card.Header>
       <Card.Body>
-        <div style={{ height: 300, overflowY: 'auto', marginBottom: 16, background: 'rgba(255,255,255,0.1)', borderRadius: 8 }}>
+        <div ref={chatBoxRef} style={{ height: 300, overflowY: 'auto', marginBottom: 16, background: 'rgba(255,255,255,0.1)', borderRadius: 8 }}>
           <ListGroup variant="flush">
             {messages.length === 0 && (
               <ListGroup.Item className="bg-transparent text-center text-muted">
@@ -111,7 +112,6 @@ const ChatRealtime = () => {
                 <div>{msg.text}</div>
               </ListGroup.Item>
             ))}
-            <div ref={chatEndRef} />
           </ListGroup>
         </div>
         <Form onSubmit={handleSend} className="d-flex gap-2">

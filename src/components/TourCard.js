@@ -5,10 +5,14 @@ import { useTours } from '../context/TourContext';
 import PaymentModal from './PaymentModal';
 import ProtectedRoute from './ProtectedRoute';
 
-const TourCard = ({ tour, onEdit, showActions = true }) => {
+const TourCard = ({ tour, onEdit, showActions = true, onBookingSuccess }) => {
   const { isAuthenticated, isAdmin } = useUser();
   const { deleteTour } = useTours();
   const [showPayment, setShowPayment] = useState(false);
+
+  // Kiểm tra ngày khởi hành đã hết hạn chưa
+  const isExpired = new Date(tour.departureDate).setHours(0,0,0,0) < new Date().setHours(0,0,0,0);
+  const isSoldOut = tour.slots === 0;
 
   const handleDelete = () => {
     if (window.confirm('Bạn có chắc chắn muốn xóa tour này?')) {
@@ -26,7 +30,7 @@ const TourCard = ({ tour, onEdit, showActions = true }) => {
 
   return (
     <>
-      <Card className="h-100 shadow-sm tour-card">
+      <Card className={`h-100 shadow-sm tour-card${isExpired ? ' bg-light text-muted' : ''}`}>
         <Card.Img 
           variant="top" 
           src={tour.image} 
@@ -40,9 +44,15 @@ const TourCard = ({ tour, onEdit, showActions = true }) => {
           </Card.Text>
           <Card.Text>
             <strong>🗓️ Khởi hành:</strong> {new Date(tour.departureDate).toLocaleDateString('vi-VN')}
+            {isExpired && (
+              <span className="ms-2 badge bg-secondary">Đã hết hạn</span>
+            )}
           </Card.Text>
           <Card.Text>
             <strong>💰 Giá:</strong> <span className="text-primary fw-bold">{tour.price.toLocaleString('vi-VN')} VNĐ</span>
+          </Card.Text>
+          <Card.Text>
+            <strong>🎟️ Slot còn lại:</strong> <span className={tour.slots === 0 ? 'text-danger fw-bold' : 'text-success fw-bold'}>{tour.slots}</span>
           </Card.Text>
           <div className="mb-2">
             <Badge bg="warning" text="dark">
@@ -52,8 +62,12 @@ const TourCard = ({ tour, onEdit, showActions = true }) => {
           <div className="mt-auto">
             <div className="d-grid gap-2">
               {/* User có thể đặt tour */}
-              <Button variant="success" onClick={handleBookTour}>
-                🎯 Đặt tour ngay
+              <Button 
+                variant={isSoldOut || isExpired ? 'secondary' : 'success'} 
+                onClick={handleBookTour}
+                disabled={isSoldOut || isExpired}
+              >
+                {isExpired ? 'Đã hết hạn' : isSoldOut ? 'Đã hết slot' : '🎯 Đặt tour ngay'}
               </Button>
               
               {/* Chỉ Admin mới thấy nút quản lý */}
@@ -86,6 +100,7 @@ const TourCard = ({ tour, onEdit, showActions = true }) => {
         show={showPayment}
         onHide={() => setShowPayment(false)}
         tour={tour}
+        onBookingSuccess={onBookingSuccess}
       />
     </>
   );
