@@ -6,6 +6,7 @@ import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import TourCard from '../components/TourCard';
 import ChatAI from '../components/ChatAI';
+import ChatRealtime from '../components/ChatRealtime';
 import { useTours } from '../context/TourContext';
 
 const Home = () => {
@@ -37,6 +38,7 @@ const Home = () => {
         </Col>
         <Col md={4}>
           <ChatAI />
+          <ChatRealtime />
         </Col>
       </Row>
 
