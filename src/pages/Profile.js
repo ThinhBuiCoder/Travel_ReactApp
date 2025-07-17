@@ -60,7 +60,6 @@ const Profile = () => {
                 <div>
                   <p><strong>Tên:</strong> {user.name}</p>
                   <p><strong>Email:</strong> {user.email}</p>
-                  <p><strong>Tour đã đặt:</strong> {user.bookedTours?.length || 0}</p>
                   <Button variant="primary" onClick={() => setIsEditing(true)}>
                     Chỉnh sửa thông tin
                   </Button>
@@ -106,5 +105,6 @@ const Profile = () => {
     </Container>
   );
 };
+
 
 export default Profile;
