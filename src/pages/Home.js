@@ -11,7 +11,10 @@ import { useTours } from '../context/TourContext';
 
 const Home = () => {
   const { tours } = useTours();
-  const featuredTours = tours.slice(0, 3);
+  // Lấy 6 tour có rating cao nhất
+  const featuredTours = [...tours]
+    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+    .slice(0, 6);
 
   return (
     <Container className="my-4">
