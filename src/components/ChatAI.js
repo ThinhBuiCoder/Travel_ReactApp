@@ -81,17 +81,17 @@ const ChatAI = () => {
     'cà mau': 'Cà Mau có mũi Cà Mau, rừng U Minh Hạ, làng nổi. Tháng 11-4 là mùa khô, lý tưởng du lịch.'
 };
 
-  const handleSubmit = (e) => {
+ const handleSubmit = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const userMessage = { type: 'user', text: input };
+    const time = dayjs().format('HH:mm:ss');
+    const userMessage = { type: 'user', text: input, time };
     setMessages(prev => [...prev, userMessage]);
 
-    // Tìm response phù hợp
     const lowercaseInput = input.toLowerCase();
     let response = fakeAIResponses.default;
-    
+
     for (const [key, value] of Object.entries(fakeAIResponses)) {
       if (lowercaseInput.includes(key) && key !== 'default') {
         response = value;
@@ -100,20 +100,24 @@ const ChatAI = () => {
     }
 
     setTimeout(() => {
-      const aiMessage = { type: 'ai', text: response };
+      const aiMessage = { type: 'ai', text: response, time: dayjs().format('HH:mm:ss') };
       setMessages(prev => [...prev, aiMessage]);
     }, 1000);
 
     setInput('');
   };
 
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
-    <Card className="mb-4">
+    <Card className="mb-4 shadow">
       <Card.Header>
         <h5>🤖 Trợ lý du lịch AI</h5>
       </Card.Header>
       <Card.Body>
-        <div style={{ height: '300px', overflowY: 'auto', marginBottom: '1rem' }}>
+        <div style={{ height: '320px', overflowY: 'auto', marginBottom: '1rem', paddingRight: '10px' }}>
           <ListGroup variant="flush">
             {messages.length === 0 && (
               <ListGroup.Item>
@@ -121,10 +125,17 @@ const ChatAI = () => {
               </ListGroup.Item>
             )}
             {messages.map((msg, index) => (
-              <ListGroup.Item key={index} className={msg.type === 'user' ? 'text-end' : ''}>
-                <strong>{msg.type === 'user' ? 'Bạn' : 'AI'}:</strong> {msg.text}
+              <ListGroup.Item
+                key={index}
+                className={`d-flex flex-column ${msg.type === 'user' ? 'align-items-end text-end' : 'align-items-start text-start'}`}
+              >
+                <div>
+                  <strong>{msg.type === 'user' ? '🧑‍💼 Bạn' : '🤖 AI'}:</strong> {msg.text}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#888' }}>{msg.time}</div>
               </ListGroup.Item>
             ))}
+            <div ref={chatEndRef} />
           </ListGroup>
         </div>
         <Form onSubmit={handleSubmit}>
