@@ -4,6 +4,7 @@ import TourCard from '../components/TourCard';
 import TourForm from '../components/TourForm';
 import AdvancedSearchFilter from '../components/AdvancedSearchFilter';
 import ProtectedRoute from '../components/ProtectedRoute';
+import VoiceSearch from '../components/VoiceSearch';
 import { useTours } from '../context/TourContext';
 import { useUser } from '../context/UserContext';
 import ApiService from '../services/api';
@@ -194,6 +195,16 @@ const Tours = () => {
               </Button>
             </div>
           </Form>
+          
+          {/* Thêm tìm kiếm bằng giọng nói */}
+          <div className="mt-2">
+            <VoiceSearch 
+              onSearch={(query) => {
+                setSearchTerm(query);
+                searchTours(query);
+              }} 
+            />
+          </div>
         </Col>
         <Col lg={6} className="text-end">
           <div className="d-flex gap-2 justify-content-end align-items-center flex-wrap">

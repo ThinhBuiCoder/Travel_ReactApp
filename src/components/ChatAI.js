@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // ← phải có useEffect và useRef
 import { Card, Form, Button, ListGroup } from 'react-bootstrap';
-
+import dayjs from 'dayjs'; // ← phải có dòng này nếu bạn dùng dayjs để lấy thời gian
 const ChatAI = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const chatEndRef = useRef(null); // Thêm dòng này để khai báo chatEndRef
 
   const fakeAIResponses = {
     'đà lạt': 'Đà Lạt là điểm đến tuyệt vời! Bạn nên ghé thăm Hồ Xuân Hương, Thung lũng Tình Yêu, Langbiang, và Cầu Rồng. Mùa đẹp nhất là tháng 10-12.',

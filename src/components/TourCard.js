@@ -1,18 +1,43 @@
-import React, { useState } from 'react';
-import { Card, Button, Badge, Modal } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Card, Button, Badge } from 'react-bootstrap';
 import { useUser } from '../context/UserContext';
 import { useTours } from '../context/TourContext';
 import PaymentModal from './PaymentModal';
 import ProtectedRoute from './ProtectedRoute';
+import { useNavigate } from 'react-router-dom';
 
 const TourCard = ({ tour, onEdit, showActions = true, onBookingSuccess }) => {
   const { isAuthenticated, isAdmin } = useUser();
   const { deleteTour } = useTours();
   const [showPayment, setShowPayment] = useState(false);
+  const navigate = useNavigate();
 
   // Kiểm tra ngày khởi hành đã hết hạn chưa
   const isExpired = new Date(tour.departureDate).setHours(0,0,0,0) < new Date().setHours(0,0,0,0);
   const isSoldOut = tour.slots === 0;
+
+  // Lắng nghe sự kiện mở modal đặt tour từ VoiceCommandHandler
+  useEffect(() => {
+    const handleOpenBookingModal = (event) => {
+      if (event.detail && event.detail.tourId === tour.id) {
+        if (!isExpired && !isSoldOut && isAuthenticated) {
+          setShowPayment(true);
+        } else if (isExpired) {
+          alert('Tour này đã hết hạn!');
+        } else if (isSoldOut) {
+          alert('Tour này đã hết slot!');
+        } else if (!isAuthenticated) {
+          alert('Vui lòng đăng nhập để đặt tour!');
+        }
+      }
+    };
+
+    window.addEventListener('open-booking-modal', handleOpenBookingModal);
+
+    return () => {
+      window.removeEventListener('open-booking-modal', handleOpenBookingModal);
+    };
+  }, [tour.id, isExpired, isSoldOut, isAuthenticated]);
 
   const handleDelete = () => {
     if (window.confirm('Bạn có chắc chắn muốn xóa tour này?')) {
@@ -28,9 +53,13 @@ const TourCard = ({ tour, onEdit, showActions = true, onBookingSuccess }) => {
     }
   };
 
+  const handleViewDetail = () => {
+    navigate(`/tour/${tour.id}`);
+  };
+
   return (
     <>
-      <Card className={`h-100 shadow-sm tour-card${isExpired ? ' bg-light text-muted' : ''}`}>
+      <Card className={`h-100 shadow-sm tour-card${isExpired ? ' bg-light text-muted' : ''}`} onClick={handleViewDetail} style={{ cursor: 'pointer' }}>
         <Card.Img 
           variant="top" 
           src={tour.image} 
@@ -64,10 +93,23 @@ const TourCard = ({ tour, onEdit, showActions = true, onBookingSuccess }) => {
               {/* User có thể đặt tour */}
               <Button 
                 variant={isSoldOut || isExpired ? 'secondary' : 'success'} 
-                onClick={handleBookTour}
+                onClick={(e) => {
+                  e.stopPropagation(); // Ngăn sự kiện click lan ra Card
+                  handleBookTour();
+                }}
                 disabled={isSoldOut || isExpired}
               >
                 {isExpired ? 'Đã hết hạn' : isSoldOut ? 'Đã hết slot' : '🎯 Đặt tour ngay'}
+              </Button>
+
+              <Button 
+                variant="outline-primary" 
+                onClick={(e) => {
+                  e.stopPropagation(); // Ngăn sự kiện click lan ra Card
+                  handleViewDetail();
+                }}
+              >
+                🔍 Xem chi tiết
               </Button>
               
               {/* Chỉ Admin mới thấy nút quản lý */}
@@ -77,14 +119,20 @@ const TourCard = ({ tour, onEdit, showActions = true, onBookingSuccess }) => {
                     <Button 
                       variant="outline-primary" 
                       size="sm" 
-                      onClick={() => onEdit(tour)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Ngăn sự kiện click lan ra Card
+                        onEdit(tour);
+                      }}
                     >
                       ✏️ Sửa
                     </Button>
                     <Button 
                       variant="outline-danger" 
                       size="sm" 
-                      onClick={handleDelete}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Ngăn sự kiện click lan ra Card
+                        handleDelete();
+                      }}
                     >
                       🗑️ Xóa
                     </Button>

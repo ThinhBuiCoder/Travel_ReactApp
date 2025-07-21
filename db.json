@@ -137,7 +137,7 @@
       "price": 5000000,
       "departureDate": "2025-12-10",
       "image": "https://static.vinwonders.com/production/gioi-thieu-ve-ha-noi-banner.jpg",
-      "rating": 4.8,
+      "rating": 4.666666666666667,
       "reviews": [
         {
           "id": 1,
@@ -154,6 +154,14 @@
           "rating": 4,
           "comment": "Tour tốt, chỉ có điều thời tiết hơi nóng. Nhưng hướng dẫn viên rất chu đáo.",
           "date": "2025-07-14T14:30:00.000Z"
+        },
+        {
+          "userId": 3,
+          "userName": "Tran Thi B",
+          "rating": 5,
+          "comment": "hihi\n",
+          "date": "2025-07-18T03:14:16.719Z",
+          "id": 1752808456720
         }
       ],
       "slots": 2
@@ -389,6 +397,60 @@
       "bookedTours": [],
       "createdAt": "2025-07-17T15:23:36.575Z",
       "id": 4
+    },
+    {
+      "name": "Bùi Mạnh Thịnh",
+      "email": "Tiepta354@gmail.com",
+      "password": "kien2004",
+      "role": "user",
+      "bookedTours": [],
+      "createdAt": "2025-07-18T03:23:51.150Z",
+      "id": 5
+    },
+    {
+      "name": "le trung kien",
+      "email": "de180359letrungkien@gmail.com",
+      "password": "kien2004",
+      "role": "user",
+      "bookedTours": [],
+      "createdAt": "2025-07-18T03:31:35.077Z",
+      "id": 6
+    },
+    {
+      "name": "aaaaaaaaaaaaaaaw",
+      "email": "de180358letrungkien@gmail.com",
+      "password": "kien2004",
+      "role": "user",
+      "bookedTours": [],
+      "createdAt": "2025-07-18T03:34:10.858Z",
+      "id": 7
+    },
+    {
+      "name": "aaaaaaaaaaaaaaaa",
+      "email": "de1803518letrungkien@gmail.com",
+      "password": "kien2004",
+      "role": "user",
+      "bookedTours": [],
+      "createdAt": "2025-07-18T03:38:59.896Z",
+      "id": 8
+    },
+    {
+      "name": "lòn ngu",
+      "email": "aaefae@gmail.com",
+      "password": "kien2004",
+      "role": "user",
+      "bookedTours": [],
+      "createdAt": "2025-07-18T04:05:51.926Z",
+      "id": 9
+    },
+    {
+      "name": "Quân",
+      "email": "tieaps@gmail.com",
+      "password": "kien2004",
+      "role": "user",
+      "bookedTours": [],
+      "createdAt": "2025-07-18T04:15:12.522Z",
+      "id": 10
     }
   ],
   "bookings": []

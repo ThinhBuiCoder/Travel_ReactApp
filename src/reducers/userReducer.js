@@ -8,14 +8,7 @@ export const userReducer = (state, action) => {
       };
     
     case 'LOGIN_SUCCESS':
-      return {
-        ...state,
-        user: action.payload.user,
-        isAuthenticated: true,
-        isAdmin: action.payload.isAdmin,
-        loading: false,
-        error: null
-      };
+      return action.payload; // Payload là user object
     
     case 'LOGIN_FAILURE':
       return {
@@ -28,19 +21,12 @@ export const userReducer = (state, action) => {
       };
     
     case 'LOGOUT':
-      return {
-        ...state,
-        user: null,
-        isAuthenticated: false,
-        isAdmin: false,
-        loading: false,
-        error: null
-      };
+      return null; // Đặt state về null khi đăng xuất
     
     case 'UPDATE_PROFILE':
       return {
         ...state,
-        user: { ...state.user, ...action.payload },
+        ...action.payload,
         error: null
       };
     

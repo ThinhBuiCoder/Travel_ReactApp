@@ -42,6 +42,29 @@ export const TourProvider = ({ children }) => {
     }
   };
 
+  // Lấy chi tiết tour theo ID
+  const getTourById = async (id) => {
+    try {
+      setLoading(true);
+      setError(null);
+      // Tìm tour trong state trước
+      const cachedTour = tours.find(tour => tour.id === parseInt(id) || tour.id === id);
+      if (cachedTour) {
+        setLoading(false);
+        return cachedTour;
+      }
+      // Nếu không tìm thấy, gọi API
+      const tour = await ApiService.getTour(id);
+      return tour;
+    } catch (err) {
+      setError('Không thể tải thông tin tour. Vui lòng thử lại.');
+      console.error('Error fetching tour:', err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const applyFilters = () => {
     let filtered = [...tours];
 
@@ -168,7 +191,8 @@ export const TourProvider = ({ children }) => {
       deleteTour,
       searchTours,
       addReview,
-      loadTours
+      loadTours,
+      getTourById
     }}>
       {children}
     </TourContext.Provider>

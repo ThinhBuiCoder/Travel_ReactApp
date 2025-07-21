@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { Container, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import { TourProvider } from './context/TourContext';
 import { UserProvider } from './context/UserContext';
@@ -11,8 +12,15 @@ import Home from './pages/Home';
 import Tours from './pages/Tours';
 import CreateTour from './pages/CreateTour';
 import Profile from './pages/Profile';
+import TourDetail from './pages/TourDetail';
+import VoiceCommandHandler from './components/VoiceCommandHandler';
+import SimpleVoiceButton from './components/SimpleVoiceButton';
 
 function App() {
+  useEffect(() => {
+    console.log('App mounted - Checking if components are loaded');
+  }, []);
+
   return (
     <UserProvider>
       <TourProvider>
@@ -22,9 +30,13 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/tours" element={<Tours />} />
+              <Route path="/tour/:id" element={<TourDetail />} />
               <Route path="/create-tour" element={<CreateTour />} />
               <Route path="/profile" element={<Profile />} />
             </Routes>
+            <VoiceCommandHandler />
+            <SimpleVoiceButton />
+            
             <footer className="bg-dark text-white py-5 mt-5">
               <Container>
                 <div className="row text-start mb-3">
